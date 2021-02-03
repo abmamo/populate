@@ -1,0 +1,12 @@
+# progress
+tqdm==4.55.0
+# testing
+pytest==6.2.2
+# coverage
+pytest-cov==2.11.1
+# mock data generator
+mock @ https://github.com/abmamo/mock/archive/v0.0.1.tar.gz
+# mock database generator
+fastdb @ https://github.com/abmamo/fastdb/archive/v0.0.1.tar.gz
+# file 2 db extraction
+fs2db @ https://github.com/abmamo/fs2db/archive/v0.0.1.tar.gz
