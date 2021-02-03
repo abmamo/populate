@@ -1,4 +1,4 @@
-# populate ![build](https://github.com/abmamo/populate/workflows/build/badge.svg?branch=main)
+# populate ![test](https://github.com/abmamo/populate/workflows/test/badge.svg?branch=main)
 generate + load data into a relational database. currently supports populating Postgres & MySQL
 with random tables of varying sizes + data types
 
