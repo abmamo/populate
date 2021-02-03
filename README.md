@@ -20,5 +20,12 @@ populate database
     connection_info = {'host': <db host>, 'port': <db port>, 'user': <db user>', 'password': <db pass>', 'database': <db_name>}
     connection_info["engine"] = "pg"
     # populate table with mock data
-    Populate.populate(connection_info=connection_info)
+    Populate.populate(
+        connection_info=connection_info,
+        dir_path=None,
+        num_tables=50,
+        max_size=10000,
+        data_types=["profile", "job"],
+        file_types=["csv", "json", "xls", "parquet"]
+    )
 ```
