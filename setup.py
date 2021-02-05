@@ -25,9 +25,11 @@ setup(
           # testing
           "pytest==6.2.2",
           "pytest-cov==2.11.1",
+          # mock data generation
           "mock @ https://github.com/abmamo/mock/archive/v0.0.1.tar.gz",
-          "fastdb @ https://github.com/abmamo/fastdb/archive/v0.0.1.tar.gz"
-          # load
+          # mock db generation
+          "fastdb @ https://github.com/abmamo/fastdb/archive/v0.0.1.tar.gz",
+          # file 2 db extraction
           "fs2db @ https://github.com/abmamo/fs2db/archive/v0.0.1.tar.gz"
           ],
       zip_safe=False
