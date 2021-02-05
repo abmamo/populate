@@ -20,6 +20,12 @@ class Populate:
         class to generate mock files & populate a
         database with the generated files
     """
+    def __init__(self):
+        # to store name + size of generated files
+        self.gen_info = None
+        # to store dir path
+        self.dir_path = None
+
     @staticmethod
     def random_string(length=5):
         """
@@ -84,8 +90,8 @@ class Populate:
                     )
         )
     
-    @staticmethod
     def generate_files(
+            self,
             num_tables=25,
             max_size=10000,
             dir_path=None,
@@ -107,9 +113,9 @@ class Populate:
                 - file_types: file extensions to generate
         """
         # get generation info
-        gen_info = Populate.get_generation_info(num_tables=num_tables, max_size=max_size)
+        self.gen_info = Populate.get_generation_info(num_tables=num_tables, max_size=max_size)
         # iterate through each file & table size
-        for file_name, data_size in tqdm(gen_info):
+        for file_name, data_size in tqdm(self.gen_info):
             # init file generator
             file_generator = mock.FileGenerator(
                 data_size=data_size,
@@ -129,13 +135,13 @@ class Populate:
                 if not os.path.exists(dir_path):
                     # create dir
                     os.mkdir(dir_path)
+            # set dir path
+            self.dir_path = dir_path
             # store data to dir
-            file_generator.store(data_dir=dir_path, file_name=file_name)
-        # return dir where data was stored
-        return dir_path
+            file_generator.store(data_dir=self.dir_path, file_name=file_name)
+
     
-    @staticmethod
-    def store(connection_info, dir_path):
+    def store(self, connection_info, dir_path):
         """
             store generated files to database
 
@@ -148,8 +154,8 @@ class Populate:
         # run extraction
         extractor.dir2db(dir_path=dir_path)
     
-    @staticmethod
     def populate(
+            self,
             connection_info,
             dir_path=None,
             num_tables=50,
@@ -171,7 +177,7 @@ class Populate:
                 - file_types: file extensions to generate
         """
         # generate files to populate db
-        dir_path = Populate.generate_files(
+        self.generate_files(
             num_tables=num_tables,
             max_size=max_size,
             dir_path=dir_path,
@@ -179,9 +185,7 @@ class Populate:
             file_types=file_types
         )
         # insert generated files into db
-        Populate.store(
+        self.store(
             connection_info=connection_info,
-            dir_path=dir_path
+            dir_path=self.dir_path
         )
-        # return dir of generated files
-        return dir_path
