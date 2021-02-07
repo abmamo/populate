@@ -11,6 +11,7 @@ import random
 import string
 # os
 import os
+import time
 import shutil
 # progress
 from tqdm import tqdm
@@ -155,7 +156,10 @@ class Populate:
         # init extractor
         extractor = fs2db.FileExtractor(connection_info=connection_info)
         # run extraction
-        extractor.dir2db(dir_path=dir_path)
+        status = extractor.dir2db(dir_path = dir_path)
+        # return status
+        return status
+        
     
     def populate(
             self,
@@ -188,9 +192,13 @@ class Populate:
             file_types=file_types
         )
         # insert generated files into db
-        self.store(
+        status = self.store(
             connection_info=connection_info,
             dir_path=self.dir_path
         )
-        # remove data containing generated files
+        # get generated table names
+        table_names = [name for name in os.listdir(self.dir_path)]
+        # remove files generated for populating db
         shutil.rmtree(self.dir_path)
+        # return table names as a list
+        return table_names

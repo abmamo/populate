@@ -35,8 +35,6 @@ def test_data_dir_population_psql():
     test_dir_population.mkdir(parents=True, exist_ok=True)
     # yield data dir
     yield test_dir_population
-    # delete data dir after tests finish
-    shutil.rmtree(str(test_dir_population))
 
 
 @pytest.fixture(scope="package", autouse=True)
@@ -49,8 +47,6 @@ def test_data_dir_population_mysql():
     test_dir_population.mkdir(parents=True, exist_ok=True)
     # yield data dir
     yield test_dir_population
-    # delete data dir after tests finish
-    shutil.rmtree(str(test_dir_population))
 
 
 @pytest.fixture(scope="package", autouse=True)

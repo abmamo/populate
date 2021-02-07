@@ -90,24 +90,22 @@ def test_populate_psql(test_populate_obj, test_data_dir_population_psql, test_st
     # num files to generate & their sizes
     num_tables, max_size = 10, 100
     # populate db from files
-    test_populate_obj.populate(
+    table_names = test_populate_obj.populate(
         connection_info=test_store_psql,
         dir_path=str(test_data_dir_population_psql),
         num_tables=num_tables,
         max_size=max_size
     )
-    # get names of files
-    file_names = [name for name in os.listdir(test_populate_obj.dir_path)]
     # get number of files generated
-    num_files = len(file_names)
+    num_populated = len(table_names)
     # assert number of files generated = num_tables
-    assert num_files == num_tables
+    assert num_populated == num_tables
     # assert dir_path specified by us is used
     assert test_populate_obj.dir_path == str(test_data_dir_population_psql)
     # assert tables exist
     rdb_middleware = RDBMiddleware(connection_info=test_store_psql)
-    assert len(rdb_middleware.get_tables()) == num_files
-    assert all(rdb_middleware.table_exists(file_name) for file_name in file_names)
+    assert len(rdb_middleware.get_tables()) == num_populated
+    assert all(rdb_middleware.table_exists(table_name) for table_name in table_names)
 
 
 def test_populate_mysql(test_populate_obj, test_data_dir_population_mysql, test_store_mysql):
@@ -115,21 +113,19 @@ def test_populate_mysql(test_populate_obj, test_data_dir_population_mysql, test_
     # num files to generate & their sizes
     num_tables, max_size = 10, 100
     # generate files
-    test_populate_obj.populate(
+    table_names = test_populate_obj.populate(
         connection_info=test_store_mysql,
         dir_path=str(test_data_dir_population_mysql),
         num_tables=num_tables,
         max_size=max_size
     )
-    # get names of files
-    file_names = [name for name in os.listdir(test_populate_obj.dir_path)]
     # get number of files generated
-    num_files = len(file_names)
+    num_populated = len(table_names)
     # assert number of files generated = num_tables
-    assert num_files == num_tables
+    assert num_populated == num_tables
     # assert dir_path specified by us is used
     assert test_populate_obj.dir_path == str(test_data_dir_population_mysql)
     # assert tables exist
     rdb_middleware = RDBMiddleware(connection_info=test_store_mysql)
-    assert len(rdb_middleware.get_tables()) == num_files
-    assert all(rdb_middleware.table_exists(file_name) for file_name in file_names)
+    assert len(rdb_middleware.get_tables()) == num_populated
+    assert all(rdb_middleware.table_exists(table_name) for table_name in table_names)
