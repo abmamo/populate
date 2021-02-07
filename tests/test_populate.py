@@ -2,6 +2,8 @@
 from populate import Populate
 # db middleware (Postgres + MySQL)
 from fs2db.connectors.rdb import RDBMiddleware
+# random
+import random
 # testing
 import pytest
 # os
@@ -45,7 +47,7 @@ def test_populate_random_strings(test_populate_obj):
     assert len(set(random_strs)) == len(random_strs)
 
 def test_random_table_sizes(test_populate_obj):
-    num_tables, max_size = 100, 10000
+    num_tables, max_size = 10, 100
     # call static method random_table_sizes
     tbl_sizes = test_populate_obj.random_table_sizes(
         num_tables=num_tables,
@@ -56,7 +58,7 @@ def test_random_table_sizes(test_populate_obj):
     assert all([tbl_size <= max_size for tbl_size in tbl_sizes])
 
 def test_get_generation_info(test_populate_obj):
-    num_tables, max_size = 100, 10000
+    num_tables, max_size = 10, 100
     # call static method get_generation_info
     generation_info = test_populate_obj.get_generation_info(
         num_tables=num_tables,
@@ -69,8 +71,6 @@ def test_generate_files(test_populate_obj, test_data_dir_generation):
     # generation info
     # num files to generate & their sizes
     num_tables, max_size = 10, 100
-    # type of files to generate
-    file_types = ["csv", "json", "xls"]
     # generate files
     test_populate_obj.generate_files(
         num_tables=num_tables,
@@ -80,7 +80,7 @@ def test_generate_files(test_populate_obj, test_data_dir_generation):
     # get number of files generated
     num_files = len([name for name in os.listdir(test_populate_obj.dir_path)])
     # assert number of files generated = num_tables
-    assert num_files == num_tables * len(file_types)
+    assert num_files == num_tables
     # assert dir_path specified by us is used
     assert test_populate_obj.dir_path == str(test_data_dir_generation)
     
@@ -89,23 +89,19 @@ def test_populate_psql(test_populate_obj, test_data_dir_population_psql, test_st
     # generation info
     # num files to generate & their sizes
     num_tables, max_size = 10, 100
-    # type of files to generate
-    file_types = ["csv", "json", "xls"]
-    # generate files
+    # populate db from files
     test_populate_obj.populate(
         connection_info=test_store_psql,
         dir_path=str(test_data_dir_population_psql),
         num_tables=num_tables,
-        max_size=max_size,
-        data_types=["profile", "job"],
-        file_types=["csv", "json", "xls"]
+        max_size=max_size
     )
     # get names of files
     file_names = [name for name in os.listdir(test_populate_obj.dir_path)]
     # get number of files generated
     num_files = len(file_names)
     # assert number of files generated = num_tables
-    assert num_files == num_tables * len(file_types)
+    assert num_files == num_tables
     # assert dir_path specified by us is used
     assert test_populate_obj.dir_path == str(test_data_dir_population_psql)
     # assert tables exist
@@ -118,23 +114,19 @@ def test_populate_mysql(test_populate_obj, test_data_dir_population_mysql, test_
     # generation info
     # num files to generate & their sizes
     num_tables, max_size = 10, 100
-    # type of files to generate
-    file_types = ["csv", "json", "xls"]
     # generate files
     test_populate_obj.populate(
         connection_info=test_store_mysql,
         dir_path=str(test_data_dir_population_mysql),
         num_tables=num_tables,
-        max_size=max_size,
-        data_types=["profile", "job"],
-        file_types=["csv", "json", "xls"]
+        max_size=max_size
     )
     # get names of files
     file_names = [name for name in os.listdir(test_populate_obj.dir_path)]
     # get number of files generated
     num_files = len(file_names)
     # assert number of files generated = num_tables
-    assert num_files == num_tables * len(file_types)
+    assert num_files == num_tables
     # assert dir_path specified by us is used
     assert test_populate_obj.dir_path == str(test_data_dir_population_mysql)
     # assert tables exist

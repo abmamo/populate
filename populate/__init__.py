@@ -25,6 +25,8 @@ class Populate:
         self.gen_info = None
         # to store dir path
         self.dir_path = None
+        # to use existing data if it exists
+        self.generated = False
 
     @staticmethod
     def random_string(length=5):
@@ -95,8 +97,8 @@ class Populate:
             num_tables=25,
             max_size=10000,
             dir_path=None,
-            data_types=["profile", "job"],
-            file_types=["csv", "json", "xls"]
+            data_types=['job', 'address', 'currency', 'profile'],
+            file_types=["csv", "json", "xls", "parquet"]
         ):
         """
             generate a file using a random string as a name
@@ -113,14 +115,14 @@ class Populate:
                 - file_types: file extensions to generate
         """
         # get generation info
-        self.gen_info = Populate.get_generation_info(num_tables=num_tables, max_size=max_size)
+        self.gen_info = Populate.get_generation_info(num_tables = num_tables, max_size = max_size)
         # iterate through each file & table size
         for file_name, data_size in tqdm(self.gen_info):
             # init file generator
             file_generator = mock.FileGenerator(
                 data_size=data_size,
-                file_types=file_types,
-                data_types=[random.choice(data_types)]
+                file_type=random.choice(file_types),
+                data_type=random.choice(data_types)
             )
             # if dir path not specified
             if dir_path is None:
@@ -158,10 +160,10 @@ class Populate:
             self,
             connection_info,
             dir_path=None,
-            num_tables=50,
-            max_size=10000,
-            data_types=["profile", "job"],
-            file_types=["csv", "json", "xls"]
+            num_tables=10,
+            max_size=100,
+            data_types=['job', 'address', 'currency', 'profile'],
+            file_types=["csv", "json", "xls", "parquet"]
         ):
         """
             populate a given database with random tables
