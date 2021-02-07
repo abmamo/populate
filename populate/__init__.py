@@ -11,6 +11,7 @@ import random
 import string
 # os
 import os
+import shutil
 # progress
 from tqdm import tqdm
 
@@ -191,3 +192,5 @@ class Populate:
             connection_info=connection_info,
             dir_path=self.dir_path
         )
+        # remove data containing generated files
+        shutil.rmtree(self.dir_path)
